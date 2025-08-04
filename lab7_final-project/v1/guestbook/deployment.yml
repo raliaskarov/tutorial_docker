@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook
+  labels:
+    app: guestbook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: guestbook
+    spec:
+      containers:
+      - name: guestbook
+        image: us.icr.io/sn-labs-raliaskarov/guestbook:v1
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+        resources:
+          requests:
+            cpu: 2m
+          limits:
+            cpu: 5m
